@@ -13,7 +13,7 @@ public class Country {
     @Column(name = "country_name")
     private String name;
 
-    @OneToMany(mappedBy = "country")
+    @OneToMany(mappedBy = "country",fetch = FetchType.EAGER)
     private List<Town> towns = new ArrayList<>();
 
     public Country(){}

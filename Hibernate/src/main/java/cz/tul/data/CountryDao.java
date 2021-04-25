@@ -5,10 +5,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,20 +18,28 @@ public class CountryDao {
     }
 
     public void saveOrUpdate(Country country) {
+        Transaction t = session().beginTransaction();
         session().saveOrUpdate(country);
+        t.commit();
     }
 
     public List<Country> getAllCountries() {
+        Transaction t = session().beginTransaction();
         Criteria crit = session().createCriteria(Country.class);
         List<Country> countries = crit.list();
+        t.commit();
         return countries;
     }
 
     public void deleteCountry(String countryName){
+        Transaction t = session().beginTransaction();
         session().createQuery("delete from Country where name=:CountryName").setParameter("CountryName",countryName).executeUpdate();
+        t.commit();
     }
 
     public void deleteAll() {
+        Transaction t = session().beginTransaction();
         session().createQuery("delete from Country").executeUpdate();
+        t.commit();
     }
 }

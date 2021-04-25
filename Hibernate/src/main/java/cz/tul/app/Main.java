@@ -45,8 +45,6 @@ public class Main {
         CountryDao countryDao = ctx.getBean(CountryDao.class);
         TownDao townDao = ctx.getBean(TownDao.class);
 
-        Transaction t = countryDao.session().beginTransaction();
-
         Country czechRepublic = new Country("Česká Republika");
         Country slovakia = new Country("Slovensko");
 
@@ -70,24 +68,16 @@ public class Main {
         townDao.saveOrUpdate(kosice);
         townDao.saveOrUpdate(trencin);
 
-
         List<Country> countries = countryDao.getAllCountries();
-        System.out.println(countries);
+        List<Town> towns = countries.get(0).getTowns();
+        System.out.println(towns);
 
-        Town town = townDao.getTown(czechRepublic.getCountryName(),prague.getName());
+        Town town = towns.get(0);
 
         Country country = town.getCountry();
+
         System.out.println(country.getCountryName());
-
-        townDao.deleteTown(prague.getName(),prague.getCountryName());
-
-        System.out.println(townDao.getAllTowns());
-
-        countryDao.deleteCountry(slovakia.getCountryName());
-
-        System.out.println(townDao.getAllTowns());
-
-        t.commit();
+        System.out.println(towns);
 
     }
 }
